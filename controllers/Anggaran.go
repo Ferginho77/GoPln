@@ -15,7 +15,7 @@ func GetAnggaran(c *gin.Context) {
 	var anggaran []models.Anggaran
 
 	// Query dengan order AnggaranId DESC
-	if err := config.DB.Order("AnggaranId DESC").Find(&anggaran).Error; err != nil {
+	if err := config.DB.Order("AnggaranId").Find(&anggaran).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -34,8 +34,8 @@ func CreateAnggaran(c *gin.Context) {
 	}
 
 	// Validasi input field wajib
-	if input.Bidang == "" || input.Tahapan == "" || input.RencanaAnggaran == 0 ||
-		input.Realisasi == 0 || input.TanggalAnggaran.IsZero() || input.ProyekId == 0 {
+	if input.Bidang == "" || input.Tahapan == "" || input.RencanaAnggaran.IsZero() ||
+		input.Realisasi.IsZero() || input.TanggalAnggaran.IsZero() || input.ProyekId == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Semua field wajib diisi"})
 		return
 	}
